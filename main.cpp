@@ -1,18 +1,18 @@
 
 /*
-Ê¹ÓÃÄÚ´æÓ³ÉäÎÄ¼şµÄ²½Öè£º
-1¡¢´´½¨»ò´ò¿ªÒ»¸öÎÄ¼şÄÚºË¶ÔÏó£¬¸Ã¶ÔÏó±êÊ¶ÁËÎÒÃÇÏëÒªÓÃ×÷ÄÚ´æÓ³ÉäÎÄ¼şµÄÄÇ¸ö´ÅÅÌÎÄ¼ş¡£
+ä½¿ç”¨å†…å­˜æ˜ å°„æ–‡ä»¶çš„æ­¥éª¤ï¼š
+1ã€åˆ›å»ºæˆ–æ‰“å¼€ä¸€ä¸ªæ–‡ä»¶å†…æ ¸å¯¹è±¡ï¼Œè¯¥å¯¹è±¡æ ‡è¯†äº†æˆ‘ä»¬æƒ³è¦ç”¨ä½œå†…å­˜æ˜ å°„æ–‡ä»¶çš„é‚£ä¸ªç£ç›˜æ–‡ä»¶ã€‚
 CreateFile();
-2¡¢´´½¨Ò»¸öÎÄ¼şÓ³ÉäÄÚºË¶ÔÏó£¬À´¸æËßÏµÍ³ÎÄ¼şµÄ´óĞ¡ÒÔ¼°ÎÒÃÇ´òËãÈçºÎ·ÃÎÊÎÄ¼ş¡£
+2ã€åˆ›å»ºä¸€ä¸ªæ–‡ä»¶æ˜ å°„å†…æ ¸å¯¹è±¡ï¼Œæ¥å‘Šè¯‰ç³»ç»Ÿæ–‡ä»¶çš„å¤§å°ä»¥åŠæˆ‘ä»¬æ‰“ç®—å¦‚ä½•è®¿é—®æ–‡ä»¶ã€‚
 CreateFileMapping();
-3¡¢¸æËßÏµÍ³°ÑÎÄ¼şÓ³Éä¶ÔÏóµÄ²¿·Ö»òÈ«²¿Ó³Éäµ½½ø³ÌµÄµØÖ·¿Õ¼äÖĞ¡£
+3ã€å‘Šè¯‰ç³»ç»ŸæŠŠæ–‡ä»¶æ˜ å°„å¯¹è±¡çš„éƒ¨åˆ†æˆ–å…¨éƒ¨æ˜ å°„åˆ°è¿›ç¨‹çš„åœ°å€ç©ºé—´ä¸­ã€‚
 MapViewOfFile();
-ÓÃÍêÄÚ´æÓ³ÉäÎÄ¼şÖ®ºó£¬±ØĞëÖ´ĞĞÒÔÏÂÈı²½½øĞĞÇåÀí¡£
-1¡¢¸æËßÏµÍ³´Ó½ø³ÌµØÖ·¿Õ¼äÖĞÈ¡Ïû¶ÔÎÄ¼şÓ³ÉäÄÚºË¶ÔÏóµÄÓ³Éä¡£
+ç”¨å®Œå†…å­˜æ˜ å°„æ–‡ä»¶ä¹‹åï¼Œå¿…é¡»æ‰§è¡Œä»¥ä¸‹ä¸‰æ­¥è¿›è¡Œæ¸…ç†ã€‚
+1ã€å‘Šè¯‰ç³»ç»Ÿä»è¿›ç¨‹åœ°å€ç©ºé—´ä¸­å–æ¶ˆå¯¹æ–‡ä»¶æ˜ å°„å†…æ ¸å¯¹è±¡çš„æ˜ å°„ã€‚
 UnmapViewOfFile();
-2¡¢¹Ø±ÕÎÄ¼şÓ³ÉäÄÚºË¶ÔÏó¡£
+2ã€å…³é—­æ–‡ä»¶æ˜ å°„å†…æ ¸å¯¹è±¡ã€‚
 CloseHandle();
-3¡¢¹Ø±ÕÎÄ¼şÄÚºË¶ÔÏó¡£
+3ã€å…³é—­æ–‡ä»¶å†…æ ¸å¯¹è±¡ã€‚
 CloseHandle();
 */
 
@@ -20,83 +20,81 @@ CloseHandle();
 #include <windows.h>
 #include <string>
 
-int MemMapAppFile(std::string fPath,void *data, size_t length)
+int MemMapAppFile(std::string fPath, void *data, size_t length)
 {
-    //Èç¹û´æÔÚÔò´ò¿ª£¬²»´æÔÚÔò´´½¨£¨Â·¾¶²»ºÏ·¨Ê§°Ü£©
-    HANDLE hFile = CreateFileA(fPath.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_FLAG_SEQUENTIAL_SCAN, NULL);
-    if (hFile == INVALID_HANDLE_VALUE)
-    {
-        return GetLastError();
-    }
+	//å¦‚æœå­˜åœ¨åˆ™æ‰“å¼€ï¼Œä¸å­˜åœ¨åˆ™åˆ›å»ºï¼ˆè·¯å¾„ä¸åˆæ³•å¤±è´¥ï¼‰
+	HANDLE hFile = CreateFileA(fPath.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		return GetLastError();
+	}
 
-    //¾ÉÎÄ¼ş´óĞ¡
-    LARGE_INTEGER  oldSize;
-    bool ret = GetFileSizeEx(hFile, &oldSize);
-    if (!ret)
-    {
-        return GetLastError();
-    }
+	//æ—§æ–‡ä»¶å¤§å°
+	LARGE_INTEGER  oldSize;
+	bool ret = GetFileSizeEx(hFile, &oldSize);
+	if (!ret)
+	{
+		return GetLastError();
+	}
 
-    //Ğ´Èëºó´óĞ¡
-    LARGE_INTEGER newSize;
-    newSize.QuadPart = oldSize.QuadPart + length;
+	//å†™å…¥åæ–°æ–‡ä»¶å¤§å°
+	LARGE_INTEGER newSize;
+	newSize.QuadPart = oldSize.QuadPart + length;
 
-    //´ÅÅÌ×îĞ¡Á£¶È
-    SYSTEM_INFO SysInfo;  
-    DWORD dwSysGran;      
-    GetSystemInfo(&SysInfo);
-    dwSysGran = SysInfo.dwAllocationGranularity;
+	//ç£ç›˜æœ€å°ç²’åº¦
+	SYSTEM_INFO SysInfo;
+	DWORD dwSysGran;
+	GetSystemInfo(&SysInfo);
+	dwSysGran = SysInfo.dwAllocationGranularity;
 
-    //ÒªÓ³ÉäµÄ´óĞ¡,¶ÔÆë×îĞ¡Á£¶È£¨¹Ù·½ÎÄµµÃ»Õâ¸öÒªÇó£©
-    LARGE_INTEGER fileSize;
-    fileSize.QuadPart = newSize.QuadPart;// (newSize.QuadPart / dwSysGran + 1)* (dwSysGran);
-    HANDLE hMapFile;      // handle for the file's memory-mapped regionÎÄ¼şÄÚ´æÓ³ÉäÇøÓòµÄ¾ä±ú
-    hMapFile = CreateFileMappingA(hFile,          // current file handleµ±Ç°ÎÄ¼ş¾ä±ú
-        NULL,           // default securityÄ¬ÈÏ°²È«ĞÔ
-        PAGE_READWRITE, // read/write permission¶Á/Ğ´È¨ÏŞ
-        fileSize.HighPart,   // size of mapping object, highÓ³Éä¶ÔÏóµÄ´óĞ¡£¬¸ß
-        fileSize.LowPart,  // size of mapping object, lowÓ³Éä¶ÔÏóµÄ´óĞ¡£¬µÍ
-        NULL);          // name of mapping objectÓ³Éä¶ÔÏóµÄÃû³Æ
+	//è¦æ˜ å°„çš„å¤§å°ï¼Œå’Œæ–°æ–‡ä»¶å¤§å°ä¸€æ ·
+	HANDLE hMapFile;      // handle for the file's memory-mapped regionæ–‡ä»¶å†…å­˜æ˜ å°„åŒºåŸŸçš„å¥æŸ„
+	hMapFile = CreateFileMappingA(hFile,          // current file handleå½“å‰æ–‡ä»¶å¥æŸ„
+		NULL,           // default securityé»˜è®¤å®‰å…¨æ€§
+		PAGE_READWRITE, // read/write permissionè¯»/å†™æƒé™
+		newSize.HighPart,   // size of mapping object, highæ˜ å°„å¯¹è±¡çš„å¤§å°ï¼Œé«˜
+		newSize.LowPart,  // size of mapping object, lowæ˜ å°„å¯¹è±¡çš„å¤§å°ï¼Œä½
+		NULL);          // name of mapping objectæ˜ å°„å¯¹è±¡çš„åç§°
 
-    if (hMapFile == NULL)
-    {
-        return GetLastError();
-    }
+	if (hMapFile == NULL)
+	{
+		return GetLastError();
+	}
 
-    //Ó³ÉäÊÔÍ¼´óĞ¡£¬ÔÚÊÔÍ¼ÄÚ¿ÉÒÔÏñÄÚ´æÒ»Ñù²Ù×÷,¶ÔÆë×îĞ¡Á£¶È£¨¹Ù·½ÎÄµµÃ»Õâ¸öÒªÇó£©
-    LARGE_INTEGER viewSize;
-    viewSize .QuadPart = (oldSize.QuadPart / dwSysGran) * (dwSysGran); //length;
-    LPVOID lpMapAddress;  // pointer to the base address of theÖ¸Ïò´æ´¢Æ÷Ó³ÉäÇøÓò
-    lpMapAddress = MapViewOfFileEx(hMapFile,            // handle to
-        FILE_MAP_ALL_ACCESS, // read/write
-        viewSize.HighPart,                   // high-order 32
-        viewSize.LowPart,      // low-order 32
-        0, // number of bytes
-        NULL);     
+	//æ˜ å°„è¯•å›¾å¤§å°ï¼Œåœ¨è¯•å›¾å†…å¯ä»¥åƒå†…å­˜ä¸€æ ·æ“ä½œ,å¯¹é½æœ€å°ç²’åº¦
+	LARGE_INTEGER viewSize;
+	viewSize.QuadPart = (oldSize.QuadPart / dwSysGran) * (dwSysGran); //length;
+	LPVOID lpMapAddress;  // pointer to the base address of theæŒ‡å‘å­˜å‚¨å™¨æ˜ å°„åŒºåŸŸ
+	lpMapAddress = MapViewOfFileEx(hMapFile,            // handle to
+		FILE_MAP_ALL_ACCESS, // read/write
+		viewSize.HighPart,                   // high-order 32
+		viewSize.LowPart,      // low-order 32
+		0, // number of bytes
+		NULL);
 
-    if (lpMapAddress == NULL)
-    {
-        return GetLastError();
-    }
+	if (lpMapAddress == NULL)
+	{
+		return GetLastError();
+	}
 
-    int startOffset = oldSize.QuadPart % dwSysGran;//·Ç¸ºÊı£¬ÓÉÓÚ
-    memcpy((char*)lpMapAddress + startOffset, data, length);
+	int startOffset = oldSize.QuadPart % dwSysGran;//æ—§æ•°æ®å‰©ä½™é‡
+	memcpy((char*)lpMapAddress + startOffset, data, length);//æ¥ç€å°±æ•°æ®æ‹·è´
 
-    BOOL bFlag;           // a result holder½á¹û³ÖÓĞÕß
-    // Close the file mapping object and the open file¹Ø±ÕÎÄ¼şÓ³Éä¶ÔÏóºÍ´ò¿ªµÄÎÄ¼ş
-    bFlag = UnmapViewOfFile(lpMapAddress);
-    bFlag = CloseHandle(hMapFile); // close the file mapping object¹Ø±ÕÎÄ¼şÓ³Éä¶ÔÏó
-    if (!bFlag)
-    {
-        return GetLastError();
-    }
+	BOOL bFlag;           // a result holderç»“æœæŒæœ‰è€…
+	// Close the file mapping object and the open fileå…³é—­æ–‡ä»¶æ˜ å°„å¯¹è±¡å’Œæ‰“å¼€çš„æ–‡ä»¶
+	bFlag = UnmapViewOfFile(lpMapAddress);
+	bFlag = CloseHandle(hMapFile); // close the file mapping objectå…³é—­æ–‡ä»¶æ˜ å°„å¯¹è±¡
+	if (!bFlag)
+	{
+		return GetLastError();
+	}
 
-    bFlag = CloseHandle(hFile);   // close the file itself¹Ø±ÕÎÄ¼ş±¾Éí
-    if (!bFlag)
-    {
-        return GetLastError();
-    }
-    return 0;
+	bFlag = CloseHandle(hFile);   // close the file itselfå…³é—­æ–‡ä»¶æœ¬èº«
+	if (!bFlag)
+	{
+		return GetLastError();
+	}
+	return 0;
 }
 
 int main(void)
